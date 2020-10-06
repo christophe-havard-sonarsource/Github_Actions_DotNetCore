@@ -27,6 +27,13 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'My Sonarcloud token'
+        organization: 'my-awesome-sonarcloud-org'
+        scannerMode: 'MSBuild'
+        projectKey: 'my-awesome-sonarcloud-org_My_DotnetCore_Project'
+        projectName: 'My_DotnetCore_Project'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
@@ -34,6 +41,7 @@ stages:
         projects: |
           $(workingDirectory)/*.csproj
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
+    - task: SonarCloudAnalyze@1
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
@@ -43,6 +51,10 @@ stages:
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
-
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
+        
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
+    
