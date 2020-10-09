@@ -27,6 +27,12 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'Sonarcloud3'
+        organization: 'my-awesome-sonarcloud-org'
+        scannerMode: 'MSBuild'
+        projectKey: 'My_DotnetCore_Project'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
