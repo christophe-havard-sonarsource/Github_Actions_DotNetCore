@@ -13,4 +13,4 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - export PROJECT_NAME=Surfrider-RecurringJobs
           - dotnet restore
-          - dotnet build $PROJECT_NAME
+          - dotnet build
