@@ -11,6 +11,6 @@ pipelines:
         caches:
           - dotnetcore
         script: # Modify the commands below to build your repository.
-          - export PROJECT_NAME=My_DotnetCore_Project
+          - export PROJECT_NAME=Surfrider-RecurringJobs
           - dotnet restore
           - dotnet build $PROJECT_NAME
