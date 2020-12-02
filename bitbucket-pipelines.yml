@@ -17,7 +17,7 @@ definitions:
       caches:
         - sonar
       script:
-        - dotnet build
+        - dotnet buildf
     
 pipelines:                 # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
   branches:
