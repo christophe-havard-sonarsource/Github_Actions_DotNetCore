@@ -10,9 +10,6 @@ variables:
   # Azure Resource Manager connection created during pipeline creation
   azureSubscription: '1ef2ff7e-1328-4571-88bf-6a097d27ae78'
 
-  # Function app name
-  functionAppName: ''
-
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
@@ -30,14 +27,24 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'Sonarcloud3'
+        organization: 'my-awesome-sonarcloud-org'
+        scannerMode: 'MSBuild'
+        projectKey: 'My_DotnetCore_Project'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
         command: 'build'
-        projects: |
-          $(workingDirectory)/*.csproj
+        projects: 
+          $(workingDirectory)/*.sln       #build the whole solution
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
+    - task: SonarCloudAnalyze@1 
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -46,6 +53,7 @@ stages:
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
-
+        
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
+    
