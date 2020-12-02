@@ -4,8 +4,10 @@
 #  The workflow allows running tests and code linting on the default branch.
 
 image: mcr.microsoft.com/dotnet/core/sdk:3.1
+
 clone:
   depth: full              # SonarCloud scanner needs the full history to assign issues properly
+
 definitions:
   caches:
     sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
@@ -14,21 +16,20 @@ definitions:
       name: Build, test and analyze on SonarCloud
       caches:
         - sonar
-        - dotnetcore
       script:
-        - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-        - dotnet restore
-        - dotnet build --no-restore --configuration Release
-        - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+        - dotnet build
         - pipe: sonarsource/sonarcloud-scan:1.2.0
-    
     - step: &check-quality-gate-sonarcloud
       name: Check the Quality Gate on SonarCloud
       script:
         - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
 
-pipelines:
+pipelines:                 # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
   branches:
     master:
-      - step:*build-test-sonarcloud
-      - step:*check-quality-gate-sonarcloud
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
+  pull-requests:
+    '**':
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
