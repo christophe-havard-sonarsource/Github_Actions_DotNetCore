@@ -13,41 +13,21 @@ definitions:
     - step: &build-test-sonarcloud
       name: Build, test and analyze on SonarCloud
       caches:
-        - **************************           # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
         - sonar
+        - dotnetcore
       script:
-        - **************************           # Build your project and run
+        - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+        - dotnet restore
+        - dotnet build --no-restore --configuration Release
+        - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
         - pipe: sonarsource/sonarcloud-scan:1.2.0
+    
     - step: &check-quality-gate-sonarcloud
       name: Check the Quality Gate on SonarCloud
       script:
         - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
 
 pipelines:
-  default:
-    - parallel:
-        - step:
-            name: Build and Test
-            caches:
-              - dotnetcore
-            script:
-              - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-              - dotnet restore
-              - dotnet build --no-restore --configuration Release
-              - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
-        - step:
-            name: Lint the code
-            caches:
-              - dotnetcore
-            script:
-              - export SOLUTION_NAME=Surfrider-RecurringJobs
-              - export REPORTS_PATH=linter-reports
-              - dotnet new tool-manifest
-              - dotnet tool install JetBrains.ReSharper.GlobalTools
-              - dotnet tool restore
-              - dotnet jb inspectcode ${SOLUTION_NAME}.sln --output="${REPORTS_PATH}/jb-${BITBUCKET_BUILD_NUMBER}.xml"
-            artifacts:
-              - linter-reports/**
   branches:
     master:
       - step: *build-test-sonarcloud
