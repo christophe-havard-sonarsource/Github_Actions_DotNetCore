@@ -11,6 +11,7 @@ pipelines:
         name: Prepare Analysis
         script:
           - dotnet tool install --global dotnet-sonarscanner
+          - export PATH="$PATH:/root/.dotnet/tools"
           - dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${SONAR_TOKEN}" /o:"christophe-havard-sonarsource-1" /v:"${BITBUCKET_COMMIT}" /d:"sonar.host.url=https://sonarcloud.io"
     - step:
         name: Build and Test
