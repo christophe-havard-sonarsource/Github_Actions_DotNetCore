@@ -13,7 +13,7 @@ pipelines:
           - dotnetcore
         script:
           - apt-get update
-          - apt-get install --yes --force-yes openjdk-8-jre
+          - apt-get install --yes openjdk-11-jre
           - dotnet tool install --global dotnet-sonarscanner
           - export PATH="$PATH:/root/.dotnet/tools"
           - dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${SONAR_TOKEN}" /o:"christophe-havard-sonarsource-1" /v:"${BITBUCKET_COMMIT}" /d:"sonar.host.url=https://sonarcloud.io"
