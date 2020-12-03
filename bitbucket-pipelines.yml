@@ -17,11 +17,11 @@ pipelines:
         name: Build and Test
         caches:
           - dotnetcore
-          script:
-            - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
-            - dotnet restore
-            - dotnet build --no-restore --configuration Release
-            - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+        script:
+          - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+          - dotnet restore
+          - dotnet build --no-restore --configuration Release
+          - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
     - step:
         name: SonarCloud - End Analysis
         script:
