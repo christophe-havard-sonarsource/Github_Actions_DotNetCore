@@ -25,5 +25,6 @@ pipelines:
     - step:
         name: SonarCloud - End Analysis
         script:
+          - export PATH="$PATH:/root/.dotnet/tools"
           - dotnet sonarscanner end /d:"sonar.login=${SONAR_TOKEN}"
                 
