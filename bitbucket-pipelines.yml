@@ -6,7 +6,8 @@
 image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 definitions:
-  - step: &build-test-sonarcloud
+  steps:
+    - step: &build-test-sonarcloud
       name: Build and Test
       caches:
         - dotnetcore      
