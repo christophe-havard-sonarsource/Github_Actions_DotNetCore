@@ -25,6 +25,11 @@ definitions:
           - dotnet build --no-restore --configuration Release
           - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
           - dotnet sonarscanner end /d:"sonar.login=${SONAR_TOKEN}"
+          - pipe: sonarsource/sonarcloud-scan:1.2.1
+            variables:
+              EXTRA_ARGS: -Dsonar.projectDescription=\"Project with sonarcloud-scan pipe\"
+              SONAR_SCANNER_OPTS: -Xmx512m
+              DEBUG: "true"
 pipelines:
   default:
     - step: *build-test-sonarcloud
