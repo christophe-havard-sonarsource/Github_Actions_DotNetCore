@@ -27,7 +27,7 @@ public static class Helper {
         }
         // I add another useless code line
         public static void DoNothing(){
-            Environment.GetEnvironmentVariable("postgre_connection");
+            Environment.GetSecret();
         }
 }
 }
