@@ -1,0 +1,24 @@
+#  Template .NET Core build
+
+#  This template allows you to validate your .NET Core package.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: mcr.microsoft.com/dotnet/core/sdk:3.1
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        caches:
+          - dotnetcore
+        script:
+          - apt-get update
+          - apt-get install --yes openjdk-11-jre
+          - dotnet tool install --global dotnet-sonarscanner
+          - export PATH="$PATH:/root/.dotnet/tools"
+          - dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${SONAR_TOKEN}" /o:"christophe-havard-sonarsource-1" /v:"${BITBUCKET_COMMIT}" /d:"sonar.host.url=https://sonarcloud.io"
+          - REPORTS_PATH=./test-reports/build_${BITBUCKET_BUILD_NUMBER}
+          - dotnet restore
+          - dotnet build --no-restore --configuration Release
+          - dotnet test --no-build --configuration Release --test-adapter-path:. --logger:"junit;LogFilePath=$REPORTS_PATH/junit.xml"
+          - dotnet sonarscanner end /d:"sonar.login=${SONAR_TOKEN}"
