@@ -28,17 +28,17 @@ jobs:
       # Runs a single command using the runners shell
       - name: install jdk
         run: |
-          - apt-get update
-          - apt-get install --yes openjdk-11-jre
+          apt-get update
+          apt-get install --yes openjdk-11-jre
           
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          - dotnet tool install --global dotnet-sonarscanner
-          - export PATH="$PATH:/root/.dotnet/tools"
-          - dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /o:"christophe-havard-sonarsource-1" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
-          - dotnet restore
-          - dotnet build --no-restore --configuration Release
-          - dotnet test --no-build --configuration Release
-          - dotnet sonarscanner end /d:"sonar.login=${{secrets.SONAR_TOKEN}}"
+          dotnet tool install --global dotnet-sonarscanner
+          export PATH="$PATH:/root/.dotnet/tools"
+          dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /o:"christophe-havard-sonarsource-1" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+          dotnet test --no-build --configuration Release
+          dotnet sonarscanner end /d:"sonar.login=${{secrets.SONAR_TOKEN}}"
