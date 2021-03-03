@@ -37,7 +37,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-sonarscanner
           export PATH="$PATH:/root/.dotnet/tools"
-          dotnet sonarscanner begin /k:"christophe-havard-sonarsource_my_dotnetcore_project" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /o:"christophe-havard-sonarsource-1" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
+          dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
           dotnet restore
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --configuration Release
