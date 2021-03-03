@@ -42,12 +42,12 @@ jobs:
           dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
           dotnet restore
           dotnet build --no-restore --configuration Release
-  run Tests:
+  run_Tests:
       runs-on: ubuntu-latest
       steps:
       - name: Test
         run: dotnet test --no-build --configuration Release
-  run SonarScanner:
+  run_SonarScanner:
       runs-on: ubuntu-latest
       steps:          
       - name: SonarScanner STEP 2 - END
