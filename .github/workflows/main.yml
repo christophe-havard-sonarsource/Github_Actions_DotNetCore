@@ -32,12 +32,19 @@ jobs:
           java-version: 1.11
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Install SonarScanner .NET Global tool
         run: |
           dotnet tool install --global dotnet-sonarscanner
           export PATH="$PATH:/root/.dotnet/tools"
-          dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
+          
+      - name: SonarScanner STEP 1 - BEGIN
+        run: dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
+          
+      - name: Build & Test
+        run: |         
           dotnet restore
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --configuration Release
-          dotnet sonarscanner end /d:"sonar.login=${{secrets.SONAR_TOKEN}}"
+          
+      - name: SonarScanner STEP 2 - END
+        run: dotnet sonarscanner end /d:"sonar.login=${{secrets.SONAR_TOKEN}}"
