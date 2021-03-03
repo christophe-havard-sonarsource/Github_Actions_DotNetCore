@@ -27,10 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: install jdk
-        run: |
-          apt-get update
-          apt-get install --yes openjdk-11-jre
-          
+        uses: actions/setup-java@v1.4.3
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
