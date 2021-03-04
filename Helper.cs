@@ -20,9 +20,7 @@ public static class Helper {
         }
         public static string GetConnectionString()
         {
-             if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") != "Local")
-                return GetKeyVaultConnectionString("db-plastico-dev-connectionstring");
-             else
+             
                 return Environment.GetEnvironmentVariable("postgre_connection");
         }
         // I add another useless code line
@@ -36,7 +34,6 @@ public static class Helper {
         public static int ComputeWithSomeRecursion(int num, int inc)
         {
             num = num * ComputeWithSomeRecursion(num, inc-1);
-            
             return num;
         }
 }
