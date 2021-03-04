@@ -15,7 +15,19 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+
+  Install_prerequisites:
+      runs-on: ubuntu-latest
+      steps:
+        - name: install jdk
+          uses: actions/setup-java@v1.4.3
+          with:
+            java-version: 1.11
+
+        - name: Install SonarScanner .NET Global tool
+          run: |
+            dotnet tool install --global dotnet-sonarscanner
+            export PATH="$PATH:/root/.dotnet/tools"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -24,18 +36,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: install jdk
-        uses: actions/setup-java@v1.4.3
-        with:
-          java-version: 1.11
-
-      # Runs a set of commands using the runners shell
-      - name: Install SonarScanner .NET Global tool
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
-          export PATH="$PATH:/root/.dotnet/tools"
           
       - name: SonarScanner STEP 1 - BEGIN
         run: |
