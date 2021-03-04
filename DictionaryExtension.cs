@@ -15,7 +15,7 @@ namespace Surfrider.Common.Extensions
         /// <returns>True if key does exists in the dictionary</returns>
         internal static bool TryGetValue<T>(this IDictionary<string, object> dictionary, string key, out T value)
         {
-            object valueObj;
+            object valueObj = "";
             if (dictionary.TryGetValue(key, out valueObj) && valueObj is T)
             {
                 value = (T)valueObj;
