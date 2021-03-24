@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: SonarQube Analysis
+name: SonarQube Analysis for Other
 
 # Controls when the action will run. 
 on: [push, pull_request, workflow_dispatch]
@@ -30,7 +30,7 @@ jobs:
           export PATH="$PATH:/root/.dotnet/tools"
           
       - name: SonarScanner STEP 1 - BEGIN
-        run: dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_URL}}"
+        run: dotnet sonarscanner begin /k:"Github_Actions_DotNetCore" /d:"sonar.login=${{secrets.SONAR_TOKEN}}" /d:"sonar.host.url=${{secrets.SONAR_HOST_URL}}"
           
       - name: Build & Test
         run: |         
