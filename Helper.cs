@@ -34,6 +34,7 @@ public static class Helper {
         public static int ComputeWithSomeRecursion(int num, int inc)
         {
             num = num * ComputeWithSomeRecursion(num, inc-1);
+            for(int i = 10; i < 10; i++){}
             return 2*num;
         }
 }
