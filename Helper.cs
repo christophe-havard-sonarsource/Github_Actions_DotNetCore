@@ -28,6 +28,8 @@ public static class Helper {
         // I add another useless code line
         public static void DoNothing(){
             Environment.GetEnvironmentVariable("postgre_connection");
+            // useless comment
+            for(int i = 10; i < 10; i++){}
         }
 }
 }
