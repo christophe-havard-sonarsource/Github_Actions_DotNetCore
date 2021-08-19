@@ -37,5 +37,11 @@ public static class Helper {
             for(int i = 10; i < 10; i++){}
             return 2*num;
         }
+        public static int ComputeWithAnotherRecursion(int num, int inc)
+        {
+            num = num * ComputeWithSomeRecursion(num, inc-1);
+            for(int i = 10; i < 10; i++){}
+            return 2*num;
+        }
 }
 }
